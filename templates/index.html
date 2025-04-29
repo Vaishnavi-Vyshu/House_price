@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>House Price Prediction</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>House Price Prediction</h1>
+
+    <form action="/predict" method="post" id="predict-form">
+        <label for="area">Area (sq ft):</label>
+        <input type="number" name="area" id="area" required>
+
+        <label for="bedrooms">Bedrooms:</label>
+        <input type="number" name="bedrooms" id="bedrooms" required>
+
+        <label for="bathrooms">Bathrooms:</label>
+        <input type="number" name="bathrooms" id="bathrooms" required>
+
+        <label for="stories">Stories:</label>
+        <input type="number" name="stories" id="stories" required>
+
+        <label for="mainroad">Mainroad (yes/no):</label>
+        <select name="mainroad" id="mainroad" required>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+
+        <label for="guestroom">Guestroom (yes/no):</label>
+        <select name="guestroom" id="guestroom" required>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+
+        <label for="basement">Basement (yes/no):</label>
+        <select name="basement" id="basement" required>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+
+        <label for="hotwaterheating">Hot Water Heating (yes/no):</label>
+        <select name="hotwaterheating" id="hotwaterheating" required>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+
+        <label for="airconditioning">Air Conditioning (yes/no):</label>
+        <select name="airconditioning" id="airconditioning" required>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+
+        <label for="parking">Parking (No. of Spaces):</label>
+        <input type="number" name="parking" id="parking" required>
+
+        <label for="prefarea">Preferred Area (yes/no):</label>
+        <select name="prefarea" id="prefarea" required>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+
+        <label for="furnishingstatus">Furnishing Status:</label>
+        <select name="furnishingstatus" id="furnishingstatus" required>
+            <option value="semi-furnished">Semi-Furnished</option>
+            <option value="unfurnished">Unfurnished</option>
+        </select>
+
+        <button type="submit">Predict Price</button>
+    </form>
+
+    <div class="result" id="result"></div>
+
+    <script>
+        const form = document.getElementById('predict-form');
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            document.getElementById('result').innerHTML = 
+                "Predicted House Price: ₹ " + data.predicted_price.toLocaleString('en-IN');
+        });
+    </script>
+
+</body>
+</html>
